@@ -60,8 +60,7 @@ IDLE:
             LDR     R0, =KPRSS              // pointer to KEY-press counter
             LDR     R1, [R0]                // R1 = current count value
 
-/* Reduce the value modulo 100 in case KPRSS is ever larger than 99.
- * (Cortex-A9 in the DE1-SoC has no UDIV, so we use repeated subtraction.) */
+
 MOD_100:                                    
             CMP     R1, #100                // value still >= 100 ?
             BLT     EXTRACT_DIGITS          // no -> we have a 2-digit number

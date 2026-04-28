@@ -1,13 +1,7 @@
 .include    "address_map_arm.s" 
 .include    "interrupt_ID.s" 
 
-/* ********************************************************************************
- * Lab 6 - Task II:
- * The program counts how many times any KEY (KEY0..KEY3) has been pressed and
- * displays the count on HEX1-HEX0 (two decimal digits, wraps at 100).
- * It also keeps the original behavior: the corresponding LED (LEDR0..LEDR3) is
- * lit whenever the matching KEY is pressed (handled by KEY_ISR).
- ********************************************************************************/
+
 
 .section    .vectors, "ax" 
 
@@ -61,13 +55,7 @@ _start:
             MOV     R0, #0b01010011         // IRQ unmasked, MODE = SVC
             MSR     CPSR_c, R0              
 
-/* ==============================================================================
- * Task II step 3: IDLE loop refreshes the HEX display from KPRSS continuously.
- *      (a) read KPRSS
- *      (b) compute tens and ones digits
- *      (c) convert each digit through SEG_TABLE
- *      (d) concatenate the two 7-seg codes and write to HEX3_HEX0
- * ============================================================================*/
+
 IDLE:                                       
             LDR     R0, =KPRSS              // pointer to KEY-press counter
             LDR     R1, [R0]                // R1 = current count value
@@ -153,13 +141,6 @@ EXIT_IRQ:
 SERVICE_FIQ:                                
             B       SERVICE_FIQ             
 
-/* ============================================================================
- * Data
- *  - KPRSS    : 32-bit counter for the number of KEY presses.
- *               Made global so KEY_ISR (a different file) can update it.
- *  - SEG_TABLE: lookup table, byte i holds the 7-segment pattern of digit i.
- *               Indices 10 and 11 are 0x00 (blank) on purpose.
- * ==========================================================================*/
 .align 2
 .global     KPRSS
 KPRSS:      .word   0                       // KEY press counter (initial value 0)

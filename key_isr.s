@@ -1,13 +1,6 @@
 .include    "address_map_arm.s" 
 
-/****************************************************************************************
- * Pushbutton - Interrupt Service Routine (Lab 6 Task II)
- *
- * Behavior:
- *   1. Increment the global KPRSS counter (wraps to 0 after 99).
- *   2. Light the LED that matches the pressed KEY (KEY0 -> LEDR0, ..., KEY3 -> LEDR3).
- *      This preserves the original example's LED behavior.
- ***************************************************************************************/
+
 
 .global     KPRSS                           // declared (and stored) in interrupt_example.s
 
@@ -18,11 +11,7 @@ KEY_ISR:
         MOV     R2, #0xF        
         STR     R2, [R0, #0xC]          // clear the edge-capture flags (acknowledge KEY)
 
-        /* ------------------------------------------------------------
-         * Increment KPRSS by 1 on every KEY interrupt; wrap at 100 so
-         * the value always fits in two decimal digits.
-         * (R0..R7 are already saved by SERVICE_IRQ, so R6/R7 are free.)
-         * ----------------------------------------------------------*/
+        
         LDR     R7, =KPRSS              // address of KEY-press counter
         LDR     R6, [R7]                // R6 = current count
         ADD     R6, R6, #1              // count = count + 1
